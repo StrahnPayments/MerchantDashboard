@@ -16,7 +16,8 @@ export default function RecentPaymentsTable({ paymentIntents, setSelectedIntent 
   // Filter payments based on search and status
   const filteredPayments = paymentIntents
     .filter(intent => {
-      const matchesSearch = intent.customer_email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      const email = intent.receipt_email || 'N/A'
+      const matchesSearch = email.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            intent.id.toLowerCase().includes(searchTerm.toLowerCase())
       const matchesStatus = statusFilter === 'all' || intent.status === statusFilter
       return matchesSearch && matchesStatus
@@ -69,14 +70,14 @@ export default function RecentPaymentsTable({ paymentIntents, setSelectedIntent 
     }).format(amount / 100)
   }
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (created: number) => {
     return new Intl.DateTimeFormat('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-    }).format(new Date(dateString))
+    }).format(new Date(created * 1000)) // Convert Unix timestamp to milliseconds
   }
 
   return (
@@ -147,46 +148,49 @@ export default function RecentPaymentsTable({ paymentIntents, setSelectedIntent 
               </tr>
             </thead>
             <tbody>
-              {filteredPayments.map((intent) => (
-                <tr 
-                  key={intent.id}
-                  className="table-row group"
-                  onClick={() => setSelectedIntent(intent)}
-                >
-                  <td className="py-4 px-4">
-                    {getStatusBadge(intent.status)}
-                  </td>
-                  <td className="py-4 px-4">
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mr-3">
-                        <span className="text-xs font-medium text-white">
-                          {intent.customer_email.charAt(0).toUpperCase()}
-                        </span>
+              {filteredPayments.map((intent) => {
+                const customerEmail = intent.receipt_email || 'N/A'
+                return (
+                  <tr 
+                    key={intent.id}
+                    className="table-row group"
+                    onClick={() => setSelectedIntent(intent)}
+                  >
+                    <td className="py-4 px-4">
+                      {getStatusBadge(intent.status)}
+                    </td>
+                    <td className="py-4 px-4">
+                      <div className="flex items-center">
+                        <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mr-3">
+                          <span className="text-xs font-medium text-white">
+                            {customerEmail.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                        <div>
+                          <p className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors">
+                            {customerEmail}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors">
-                          {intent.customer_email}
-                        </p>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-4 px-4">
-                    <span className="text-sm font-semibold text-white">
-                      {formatAmount(intent.amount, intent.currency)}
-                    </span>
-                  </td>
-                  <td className="py-4 px-4">
-                    <span className="text-sm text-slate-400">
-                      {formatDate(intent.created)}
-                    </span>
-                  </td>
-                  <td className="py-4 px-4">
-                    <span className="text-xs font-mono text-slate-500 bg-slate-800/50 px-2 py-1 rounded">
-                      {intent.id.slice(-8)}
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                    <td className="py-4 px-4">
+                      <span className="text-sm font-semibold text-white">
+                        {formatAmount(intent.amount, intent.currency)}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span className="text-sm text-slate-400">
+                        {formatDate(intent.created)}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4">
+                      <span className="text-xs font-mono text-slate-500 bg-slate-800/50 px-2 py-1 rounded">
+                        {intent.id.slice(-8)}
+                      </span>
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
         </div>

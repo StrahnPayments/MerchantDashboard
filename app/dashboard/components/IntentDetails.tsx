@@ -48,7 +48,7 @@ export default function IntentDetails({ selectedIntent }: IntentDetailsProps) {
     }).format(amount / 100)
   }
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (created: number) => {
     return new Intl.DateTimeFormat('en-US', {
       weekday: 'long',
       year: 'numeric',
@@ -58,7 +58,7 @@ export default function IntentDetails({ selectedIntent }: IntentDetailsProps) {
       minute: '2-digit',
       second: '2-digit',
       timeZoneName: 'short'
-    }).format(new Date(dateString))
+    }).format(new Date(created * 1000)) // Convert Unix timestamp to milliseconds
   }
 
   const getStatusColor = (status: string) => {
@@ -144,9 +144,9 @@ export default function IntentDetails({ selectedIntent }: IntentDetailsProps) {
         
         <DetailRow 
           icon={<Mail className="w-4 h-4" />}
-          label="Customer Email" 
-          value={selectedIntent.customer_email} 
-          copyable={true}
+          label="Receipt Email" 
+          value={selectedIntent.receipt_email || 'N/A'} 
+          copyable={!!selectedIntent.receipt_email}
         />
         
         <DetailRow 
@@ -161,11 +161,11 @@ export default function IntentDetails({ selectedIntent }: IntentDetailsProps) {
           value={selectedIntent.currency.toUpperCase()} 
         />
         
-        {selectedIntent.latest_charge_id && (
+        {selectedIntent.latest_charge && (
           <DetailRow 
             icon={<ExternalLink className="w-4 h-4" />}
             label="Latest Charge" 
-            value={selectedIntent.latest_charge_id} 
+            value={selectedIntent.latest_charge} 
             copyable={true}
           />
         )}
