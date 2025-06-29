@@ -1,11 +1,15 @@
 import './globals.css'
 import { Inter } from 'next/font/google'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ 
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+})
 
 export const metadata = {
-  title: 'Merchant Dashboard',
-  description: 'A modern payment processing dashboard',
+  title: 'Merchant Dashboard - Payment Analytics',
+  description: 'Professional payment processing dashboard with real-time analytics',
 }
 
 export default function RootLayout({
@@ -15,8 +19,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className} bg-gray-900 text-white`}>
-        {children}
+      <body className={`${inter.variable} font-sans bg-slate-950 text-slate-100 antialiased`}>
+        <div className="min-h-screen gradient-bg">
+          {children}
+        </div>
       </body>
     </html>
   )

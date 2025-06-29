@@ -1,7 +1,8 @@
 'use client'
 
 import { PaymentIntent } from '../../../lib/types'
-import { CheckCircle, Clock, AlertCircle, XCircle } from 'lucide-react'
+import { CheckCircle, Clock, AlertCircle, XCircle, Search, Filter, Download } from 'lucide-react'
+import { useState } from 'react'
 
 interface RecentPaymentsTableProps {
   paymentIntents: PaymentIntent[]
@@ -9,36 +10,44 @@ interface RecentPaymentsTableProps {
 }
 
 export default function RecentPaymentsTable({ paymentIntents, setSelectedIntent }: RecentPaymentsTableProps) {
-  // Filter and get 10 most recent succeeded payments
-  const recentSucceededPayments = paymentIntents
-    .filter(intent => intent.status === 'succeeded')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+
+  // Filter payments based on search and status
+  const filteredPayments = paymentIntents
+    .filter(intent => {
+      const matchesSearch = intent.customer_email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           intent.id.toLowerCase().includes(searchTerm.toLowerCase())
+      const matchesStatus = statusFilter === 'all' || intent.status === statusFilter
+      return matchesSearch && matchesStatus
+    })
     .slice(0, 10)
 
   const getStatusBadge = (status: string) => {
     const statusConfig = {
       succeeded: {
         icon: <CheckCircle className="h-4 w-4" />,
-        color: 'bg-green-900/20 text-green-400 border-green-800',
+        color: 'bg-green-500/10 text-green-400 border-green-500/20',
         label: 'Succeeded'
       },
       processing: {
         icon: <Clock className="h-4 w-4" />,
-        color: 'bg-yellow-900/20 text-yellow-400 border-yellow-800',
+        color: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
         label: 'Processing'
       },
       requires_action: {
         icon: <AlertCircle className="h-4 w-4" />,
-        color: 'bg-orange-900/20 text-orange-400 border-orange-800',
-        label: 'Requires Action'
+        color: 'bg-amber-500/10 text-amber-400 border-amber-500/20',
+        label: 'Action Required'
       },
       requires_payment_method: {
         icon: <AlertCircle className="h-4 w-4" />,
-        color: 'bg-red-900/20 text-red-400 border-red-800',
-        label: 'Requires Payment'
+        color: 'bg-red-500/10 text-red-400 border-red-500/20',
+        label: 'Payment Required'
       },
       canceled: {
         icon: <XCircle className="h-4 w-4" />,
-        color: 'bg-gray-900/20 text-gray-400 border-gray-800',
+        color: 'bg-slate-500/10 text-slate-400 border-slate-500/20',
         label: 'Canceled'
       }
     }
@@ -46,9 +55,9 @@ export default function RecentPaymentsTable({ paymentIntents, setSelectedIntent 
     const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.canceled
 
     return (
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${config.color}`}>
+      <span className={`status-badge ${config.color}`}>
         {config.icon}
-        <span className="ml-1">{config.label}</span>
+        <span className="ml-1.5">{config.label}</span>
       </span>
     )
   }
@@ -71,42 +80,110 @@ export default function RecentPaymentsTable({ paymentIntents, setSelectedIntent 
   }
 
   return (
-    <div className="card p-6">
-      <h2 className="text-xl font-semibold text-white mb-6">Recent Payments</h2>
-      
-      {recentSucceededPayments.length === 0 ? (
-        <div className="text-center py-8">
-          <p className="text-gray-400">No successful payments found</p>
+    <div className="card-dark p-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+        <div>
+          <h2 className="text-xl font-bold text-white mb-1">Recent Transactions</h2>
+          <p className="text-sm text-slate-400">Latest payment activities</p>
+        </div>
+        
+        <div className="flex items-center space-x-3 mt-4 sm:mt-0">
+          <button className="btn-secondary flex items-center space-x-2">
+            <Download className="w-4 h-4" />
+            <span className="hidden sm:inline">Export</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <input
+            type="text"
+            placeholder="Search by email or transaction ID..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pl-10 pr-4 py-2.5 bg-slate-800/50 border border-slate-700/50 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all duration-200"
+          />
+        </div>
+        
+        <div className="relative">
+          <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="pl-10 pr-8 py-2.5 bg-slate-800/50 border border-slate-700/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all duration-200 appearance-none cursor-pointer"
+          >
+            <option value="all">All Status</option>
+            <option value="succeeded">Succeeded</option>
+            <option value="processing">Processing</option>
+            <option value="requires_action">Action Required</option>
+            <option value="canceled">Canceled</option>
+          </select>
+        </div>
+      </div>
+
+      {/* Table */}
+      {filteredPayments.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="w-16 h-16 mx-auto mb-4 bg-slate-800 rounded-full flex items-center justify-center">
+            <Search className="w-8 h-8 text-slate-400" />
+          </div>
+          <p className="text-slate-400 mb-2">No transactions found</p>
+          <p className="text-sm text-slate-500">Try adjusting your search or filter criteria</p>
         </div>
       ) : (
         <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead>
-              <tr className="border-b border-gray-700">
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Status</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Customer Email</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Amount</th>
-                <th className="text-left py-3 px-4 text-sm font-medium text-gray-400">Date</th>
+              <tr className="border-b border-slate-800">
+                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">Status</th>
+                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">Customer</th>
+                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">Amount</th>
+                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">Date</th>
+                <th className="text-left py-4 px-4 text-sm font-semibold text-slate-300">ID</th>
               </tr>
             </thead>
             <tbody>
-              {recentSucceededPayments.map((intent) => (
+              {filteredPayments.map((intent) => (
                 <tr 
                   key={intent.id}
-                  className="table-row"
+                  className="table-row group"
                   onClick={() => setSelectedIntent(intent)}
                 >
-                  <td className="py-3 px-4">
+                  <td className="py-4 px-4">
                     {getStatusBadge(intent.status)}
                   </td>
-                  <td className="py-3 px-4 text-sm text-white">
-                    {intent.customer_email}
+                  <td className="py-4 px-4">
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mr-3">
+                        <span className="text-xs font-medium text-white">
+                          {intent.customer_email.charAt(0).toUpperCase()}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-white group-hover:text-blue-400 transition-colors">
+                          {intent.customer_email}
+                        </p>
+                      </div>
+                    </div>
                   </td>
-                  <td className="py-3 px-4 text-sm font-medium text-white">
-                    {formatAmount(intent.amount, intent.currency)}
+                  <td className="py-4 px-4">
+                    <span className="text-sm font-semibold text-white">
+                      {formatAmount(intent.amount, intent.currency)}
+                    </span>
                   </td>
-                  <td className="py-3 px-4 text-sm text-gray-400">
-                    {formatDate(intent.created)}
+                  <td className="py-4 px-4">
+                    <span className="text-sm text-slate-400">
+                      {formatDate(intent.created)}
+                    </span>
+                  </td>
+                  <td className="py-4 px-4">
+                    <span className="text-xs font-mono text-slate-500 bg-slate-800/50 px-2 py-1 rounded">
+                      {intent.id.slice(-8)}
+                    </span>
                   </td>
                 </tr>
               ))}
