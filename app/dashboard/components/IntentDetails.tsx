@@ -48,7 +48,7 @@ export default function IntentDetails({ selectedIntent }: IntentDetailsProps) {
     }).format(amount / 100)
   }
 
-  const formatDate = (created: number) => {
+  const formatDate = (created: string) => {
     return new Intl.DateTimeFormat('en-US', {
       weekday: 'long',
       year: 'numeric',
@@ -58,7 +58,7 @@ export default function IntentDetails({ selectedIntent }: IntentDetailsProps) {
       minute: '2-digit',
       second: '2-digit',
       timeZoneName: 'short'
-    }).format(new Date(created * 1000)) // Convert Unix timestamp to milliseconds
+    }).format(new Date(created)) // Changed from created * 1000 to created
   }
 
   const getStatusColor = (status: string) => {
