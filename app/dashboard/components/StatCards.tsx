@@ -46,36 +46,36 @@ export default function StatCards({ paymentIntents }: StatCardsProps) {
       title: 'Total Revenue',
       value: formattedTotalVolume,
       icon: <DollarSign className="h-6 w-6" />,
-      color: 'from-emerald-500 to-green-600',
-      bgColor: 'bg-emerald-500/10',
-      borderColor: 'border-emerald-500/20',
+      color: 'text-green-600',
+      bgColor: 'bg-green-50',
+      borderColor: 'border-green-200',
       growth: mockGrowthData[0]
     },
     {
       title: "Today's Payments",
       value: todaysSuccessfulPayments.toString(),
       icon: <TrendingUp className="h-6 w-6" />,
-      color: 'from-blue-500 to-indigo-600',
-      bgColor: 'bg-blue-500/10',
-      borderColor: 'border-blue-500/20',
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-50',
+      borderColor: 'border-blue-200',
       growth: mockGrowthData[1]
     },
     {
       title: 'Pending Transactions',
       value: activeIntents.toString(),
       icon: <Clock className="h-6 w-6" />,
-      color: 'from-amber-500 to-orange-600',
-      bgColor: 'bg-amber-500/10',
-      borderColor: 'border-amber-500/20',
+      color: 'text-amber-600',
+      bgColor: 'bg-amber-50',
+      borderColor: 'border-amber-200',
       growth: mockGrowthData[2]
     },
     {
       title: 'Successful Payments',
       value: totalSuccessfulPayments.toString(),
       icon: <CheckCircle className="h-6 w-6" />,
-      color: 'from-violet-500 to-purple-600',
-      bgColor: 'bg-violet-500/10',
-      borderColor: 'border-violet-500/20',
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-50',
+      borderColor: 'border-purple-200',
       growth: mockGrowthData[3]
     },
   ]
@@ -85,19 +85,19 @@ export default function StatCards({ paymentIntents }: StatCardsProps) {
       {stats.map((stat, index) => (
         <div
           key={stat.title}
-          className={`card-dark p-6 hover:scale-[1.02] transition-all duration-300 ${stat.borderColor} border group`}
+          className={`card p-6 hover:shadow-lg transition-all duration-300 ${stat.borderColor} border group`}
         >
           <div className="flex items-start justify-between mb-4">
             <div className={`p-3 rounded-xl ${stat.bgColor} group-hover:scale-110 transition-transform duration-300`}>
-              <div className={`bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}>
+              <div className={stat.color}>
                 {stat.icon}
               </div>
             </div>
             
             <div className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${
               stat.growth.isPositive 
-                ? 'bg-green-500/10 text-green-400 border border-green-500/20' 
-                : 'bg-red-500/10 text-red-400 border border-red-500/20'
+                ? 'bg-green-50 text-green-700 border border-green-200' 
+                : 'bg-red-50 text-red-700 border border-red-200'
             }`}>
               {stat.growth.isPositive ? (
                 <ArrowUpRight className="w-3 h-3" />
@@ -109,9 +109,9 @@ export default function StatCards({ paymentIntents }: StatCardsProps) {
           </div>
           
           <div>
-            <p className="text-sm font-medium text-slate-400 mb-1">{stat.title}</p>
-            <p className="text-2xl font-bold text-white mb-1">{stat.value}</p>
-            <p className="text-xs text-slate-500">vs last period</p>
+            <p className="text-sm font-medium text-gray-600 mb-1">{stat.title}</p>
+            <p className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</p>
+            <p className="text-xs text-gray-500">vs last period</p>
           </div>
         </div>
       ))}

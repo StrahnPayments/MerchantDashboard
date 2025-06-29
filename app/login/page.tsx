@@ -56,49 +56,40 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 gradient-bg">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)]"></div>
-        <div className="absolute top-0 left-0 w-full h-full">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-500/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
-        </div>
-      </div>
-      
+    <div className="relative min-h-screen w-full overflow-hidden bg-gray-50">
       <div className="relative flex min-h-screen">
         {/* Left Side - Branding */}
-        <div className="hidden lg:flex lg:w-1/2 items-center justify-center p-12">
+        <div className="hidden lg:flex lg:w-1/2 items-center justify-center p-12 bg-white">
           <div className="max-w-md text-center">
-            <div className="w-20 h-20 mx-auto mb-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl">
+            <div className="w-20 h-20 mx-auto mb-8 bg-black rounded-2xl flex items-center justify-center shadow-lg">
               <BarChart3 className="w-10 h-10 text-white" />
             </div>
             
-            <h1 className="text-4xl font-bold text-white mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
               PaymentPro
             </h1>
-            <p className="text-xl text-slate-300 mb-8">
+            <p className="text-xl text-gray-600 mb-8">
               Professional payment analytics dashboard
             </p>
             
             <div className="space-y-4 text-left">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
-                  <Shield className="w-4 h-4 text-green-400" />
+                <div className="w-8 h-8 bg-green-50 rounded-full flex items-center justify-center">
+                  <Shield className="w-4 h-4 text-green-600" />
                 </div>
-                <span className="text-slate-300">Enterprise-grade security</span>
+                <span className="text-gray-700">Enterprise-grade security</span>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
-                  <BarChart3 className="w-4 h-4 text-blue-400" />
+                <div className="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center">
+                  <BarChart3 className="w-4 h-4 text-blue-600" />
                 </div>
-                <span className="text-slate-300">Real-time analytics</span>
+                <span className="text-gray-700">Real-time analytics</span>
               </div>
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center">
-                  <LogIn className="w-4 h-4 text-purple-400" />
+                <div className="w-8 h-8 bg-purple-50 rounded-full flex items-center justify-center">
+                  <LogIn className="w-4 h-4 text-purple-600" />
                 </div>
-                <span className="text-slate-300">Seamless integration</span>
+                <span className="text-gray-700">Seamless integration</span>
               </div>
             </div>
           </div>
@@ -107,21 +98,21 @@ export default function LoginPage() {
         {/* Right Side - Login Form */}
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="w-full max-w-md">
-            <div className="card-dark p-8 shadow-2xl border border-slate-700/50">
+            <div className="card p-8 shadow-lg border border-gray-200">
               {/* Mobile Logo */}
               <div className="lg:hidden text-center mb-8">
-                <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center">
+                <div className="w-16 h-16 mx-auto mb-4 bg-black rounded-xl flex items-center justify-center">
                   <BarChart3 className="w-8 h-8 text-white" />
                 </div>
-                <h1 className="text-2xl font-bold text-white">PaymentPro</h1>
+                <h1 className="text-2xl font-bold text-gray-900">PaymentPro</h1>
               </div>
 
               {/* Form Header */}
               <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-white mb-2">
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">
                   {isSignUp ? 'Create Account' : 'Welcome Back'}
                 </h2>
-                <p className="text-slate-400">
+                <p className="text-gray-600">
                   {isSignUp ? 'Get started with your dashboard' : 'Sign in to your dashboard'}
                 </p>
               </div>
@@ -132,7 +123,7 @@ export default function LoginPage() {
                   {/* Email Input */}
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-4">
-                      <Mail className="h-5 w-5 text-slate-400" />
+                      <Mail className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                       id="email"
@@ -140,7 +131,7 @@ export default function LoginPage() {
                       type="email"
                       autoComplete="email"
                       required
-                      className="block w-full pl-12 pr-4 py-3.5 bg-slate-800/50 border border-slate-700/50 rounded-xl text-white placeholder-slate-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 hover:border-slate-600"
+                      className="block w-full pl-12 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500/20 focus:border-gray-400 hover:border-gray-300"
                       placeholder="Enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -150,7 +141,7 @@ export default function LoginPage() {
                   {/* Password Input */}
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 flex items-center pl-4">
-                      <Lock className="h-5 w-5 text-slate-400" />
+                      <Lock className="h-5 w-5 text-gray-400" />
                     </div>
                     <input
                       id="password"
@@ -158,7 +149,7 @@ export default function LoginPage() {
                       type="password"
                       autoComplete="current-password"
                       required
-                      className="block w-full pl-12 pr-4 py-3.5 bg-slate-800/50 border border-slate-700/50 rounded-xl text-white placeholder-slate-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 hover:border-slate-600"
+                      className="block w-full pl-12 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder-gray-500 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500/20 focus:border-gray-400 hover:border-gray-300"
                       placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -168,9 +159,9 @@ export default function LoginPage() {
 
                 {/* Error Message */}
                 {error && (
-                  <div className="flex items-start space-x-3 p-4 bg-red-500/10 border border-red-500/20 rounded-xl">
-                    <AlertTriangle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
-                    <span className="text-sm text-red-300">{error}</span>
+                  <div className="flex items-start space-x-3 p-4 bg-red-50 border border-red-200 rounded-xl">
+                    <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-red-700">{error}</span>
                   </div>
                 )}
 
@@ -178,7 +169,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-gray-500/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                 >
                   {loading ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
@@ -193,14 +184,14 @@ export default function LoginPage() {
 
               {/* Toggle Sign In/Up */}
               <div className="mt-8 text-center">
-                <p className="text-slate-400">
+                <p className="text-gray-600">
                   {isSignUp ? "Already have an account?" : "Don't have an account?"}{' '}
                   <button
                     onClick={() => {
                       setIsSignUp(!isSignUp)
                       setError('')
                     }}
-                    className="font-semibold text-blue-400 hover:text-blue-300 transition-colors focus:outline-none focus:underline"
+                    className="font-semibold text-gray-900 hover:text-gray-700 transition-colors focus:outline-none focus:underline"
                   >
                     {isSignUp ? 'Sign In' : 'Sign Up'}
                   </button>
